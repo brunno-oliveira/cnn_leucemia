@@ -130,3 +130,6 @@ dmypy.json
 
 # Images
 /data
+model/assets
+model/variables
+model/*.pb
