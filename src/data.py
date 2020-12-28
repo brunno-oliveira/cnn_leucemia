@@ -14,7 +14,6 @@ def unzip():
         print("File is unzipped in data folder")
 
 
-# CREATE TRAIN, VAL, TEST DATA FOLDER
 def split_data(
     train_ratio: float = 0.7, val_ratio: float = 0.15, test_ratio: float = 0.15
 ):
@@ -41,8 +40,8 @@ def split_data(
 
 
 def move_data_files():
-    """ Split folder creates a subfolder 'data' inside every folder
-        this moves every image to data parent /train, /val, /test folder
+    """Split folder creates a subfolder 'data' inside every folder
+    this moves every image to data parent /train, /val, /test folder
     """
     print("Moving images to train, val and test folder")
     for folder in os.listdir(os.path.join(str(Path().absolute()), "output")):
@@ -69,8 +68,8 @@ def remove_subfolder_data():
 
 def create_class_folder():
     """Create class_a and class_b folder based on filename
-        {...}0.jpeg = class_a
-        {...}1.jpeg = class_b
+    {...}0.jpeg = class_a
+    {...}1.jpeg = class_b
     """
     print("Create class folder")
     for folder in os.listdir(os.path.join(str(Path().absolute()), "output")):
@@ -105,8 +104,7 @@ def create_class_folder():
 
 
 def rename_data_folder():
-    """Delete data folder and rename output to data
-    """
+    """Delete data folder and rename output to data"""
     print("Renaming data folder")
     shutil.rmtree(os.path.join(str(Path().absolute()), "data"))
     os.rename(
@@ -122,4 +120,3 @@ if __name__ == "__main__":
     remove_subfolder_data()
     create_class_folder()
     rename_data_folder()
-
