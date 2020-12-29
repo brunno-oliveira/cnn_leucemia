@@ -1,3 +1,5 @@
+import tensorflow as tf
+
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential
 from keras.optimizers import Adam
@@ -5,15 +7,19 @@ from keras import layers
 from keras import metrics
 import keras as K
 
-import tensorflow as tf
-
-from sklearn.metrics import accuracy_score, recall_score, plot_confusion_matrix
+from sklearn.metrics import accuracy_score, recall_score
 
 import matplotlib.pyplot as plt
 from typing import List
 import numpy as np
 import pathlib
+import random
 import os
+
+SEED = 42
+np.random.seed(SEED)
+tf.random.set_seed(SEED)
+random.seed(SEED)
 
 
 class Model:
@@ -69,7 +75,7 @@ class Model:
         train_datagen = ImageDataGenerator(rescale=1.0 / 255)
         self.training_set = train_datagen.flow_from_directory(
             self.train_path,
-            seed=42,
+            seed=SEED,
             target_size=(image_height, image_width),
             batch_size=batch_size,
             class_mode="binary",
@@ -80,7 +86,7 @@ class Model:
 
         self.validation_set = validation_datagen.flow_from_directory(
             self.validation_path,
-            seed=42,
+            seed=SEED,
             target_size=(image_height, image_width),
             batch_size=batch_size,
             class_mode="binary",
@@ -91,7 +97,7 @@ class Model:
 
         self.testing_set = test_datagen.flow_from_directory(
             self.test_path,
-            seed=42,
+            seed=SEED,
             target_size=(image_height, image_width),
             batch_size=batch_size,
             class_mode="binary",
@@ -222,7 +228,9 @@ class Model:
         )
         print(f"Accuracy: {acc}")
 
-        recall = recall_score(self.testing_set.classes, np.array(self.predicted))
+        recall = round(
+            recall_score(self.testing_set.classes, np.array(self.predicted)), 3
+        )
         print(f"Recall: {recall}")
 
         tf.math.confusion_matrix(self.testing_set.classes, self.predicted)
