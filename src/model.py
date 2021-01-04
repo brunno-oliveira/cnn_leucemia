@@ -72,10 +72,13 @@ class Model:
         print("SET DATA")
         # TRAIN DATASET
 
-        train_datagen = ImageDataGenerator(rescale=1.0 / 255)
+        train_datagen = ImageDataGenerator(
+            rescale=1.0 / 255, shear_range=0.2, horizontal_flip=True
+        )
         self.training_set = train_datagen.flow_from_directory(
             self.train_path,
             seed=SEED,
+            color_mode="grayscale",
             target_size=(image_height, image_width),
             batch_size=batch_size,
             class_mode="binary",
@@ -87,6 +90,7 @@ class Model:
         self.validation_set = validation_datagen.flow_from_directory(
             self.validation_path,
             seed=SEED,
+            color_mode="grayscale",
             target_size=(image_height, image_width),
             batch_size=batch_size,
             class_mode="binary",
@@ -98,6 +102,7 @@ class Model:
         self.testing_set = test_datagen.flow_from_directory(
             self.test_path,
             seed=SEED,
+            color_mode="grayscale",
             target_size=(image_height, image_width),
             batch_size=batch_size,
             class_mode="binary",
@@ -110,7 +115,7 @@ class Model:
             layers.Conv2D(
                 filters=64,
                 kernel_size=(11, 11),
-                input_shape=(64, 64, 3),
+                input_shape=(64, 64, 1),
                 activation="relu",
             )
         )
