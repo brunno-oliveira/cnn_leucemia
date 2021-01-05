@@ -129,7 +129,8 @@ dmypy.json
 .pyre/
 
 # Images
-/data
+data/*
+output/*
 model/assets
 model/variables
 model/*.pb
