@@ -1,7 +1,7 @@
 from zipfile import ZipFile
 from pathlib import Path
-import shutil
 import splitfolders
+import shutil
 import os
 
 
@@ -11,7 +11,7 @@ class Data:
             self.project_root_path = str(Path().absolute())
         elif env == "colab":
             self.project_root_path = os.path.join(
-                str(Path().absolute()), "cnn-leucemia"
+                str(Path().absolute()), "cnn_leucemia"
             )
         else:
             raise Exception(f"ENV {env} invalid!")
@@ -21,7 +21,7 @@ class Data:
         print("Unzipping")
         if colab:
             data_zip_path = os.path.join(
-                self.project_root_path, "cnn-leucemia", "data.zip"
+                self.project_root_path, "cnn_leucemia", "data.zip"
             )
         else:
             data_zip_path = os.path.join(self.project_root_path, "data.zip")
