@@ -11,6 +11,7 @@ from sklearn.metrics import accuracy_score, recall_score
 
 import matplotlib.pyplot as plt
 from typing import List
+from pathlib import Path
 import numpy as np
 import pathlib
 import random
@@ -23,7 +24,15 @@ random.seed(SEED)
 
 
 class Model:
-    def __init__(self):
+    def __init__(self, env: str = "local"):
+        if env == "local":
+            self.data_path = os.path.join(str(Path().absolute()), "data")
+        elif env == "colab":
+            self.data_path = os.path.join(
+                str(Path().absolute()), "cnn_leucemia", "data"
+            )
+        else:
+            raise Exception(f"ENV {env} invalid!")
         print(f"Versão do TensorFlow: {tf.__version__}")
         print(f"Versão do Keras: {K.__version__}")
         print(
@@ -45,31 +54,21 @@ class Model:
         self.validation_set: K.Image.DirectoryIterator = None
         self.testing_set: K.Image.DirectoryIterator = None
 
-    def set_images_path(self, colab: bool = False):
+    def set_images_path(self):
         print("SET IMAGES PATH")
-        if colab:
-            from google.colab import drive
-
-            drive.mount("/content/drive")
-            current_path = "/content/drive"
-        else:
-            current_path = str(pathlib.Path().absolute())
-        images_root_path = os.path.join(current_path, "data")
-        self.train_path = os.path.join(images_root_path, "train")
-        self.test_path = os.path.join(images_root_path, "test")
-        self.validation_path = os.path.join(images_root_path, "val")
+        images_root_path = os.path.join(self.data_path, "data")
+        self.train_path = os.path.join(self.data_path, "train")
+        self.test_path = os.path.join(self.data_path, "test")
+        self.validation_path = os.path.join(self.data_path, "val")
 
         print(f"Train PATH: {self.train_path}")
         print(f"Test PATH: {self.test_path}")
         print(f"Vaidation PATH: {self.validation_path}")
 
-    def set_data(
-        self,
-        batch_size: int = 32,
-        image_height: int = 64,
-        image_width: int = 64,
-    ) -> Sequential:
+    def set_data(self, batch_size: int = 32) -> Sequential:
         print("SET DATA")
+        image_height: int = 128
+        image_width: int = 128
         # TRAIN DATASET
 
         train_datagen = ImageDataGenerator(
@@ -114,8 +113,8 @@ class Model:
         self.model.add(
             layers.Conv2D(
                 filters=64,
-                kernel_size=(11, 11),
-                input_shape=(64, 64, 1),
+                kernel_size=(12, 12),
+                input_shape=(128, 128, 1),
                 activation="relu",
             )
         )
@@ -168,6 +167,8 @@ class Model:
             ],
         )
 
+        self.model.summary()
+
     def train_and_predict(self, persist_model: bool = True, epochs: int = 5):
         print("TRAIN PREDICT MODEL")
         self.train_model(persist_model, epochs)
@@ -185,8 +186,6 @@ class Model:
 
         if persist_model:
             self.model.save("saved_model")
-
-        self.model.summary()
         return self.model
 
     def predict_model(self) -> List[int]:
@@ -205,8 +204,8 @@ class Model:
         plt.plot(self.history["val_loss"], label="Validation Loss")
         plt.xlabel("Epoch")
         plt.ylabel("Loss")
-        plt.ylim([0.5, 1])
-        plt.legend(loc="lower right")
+        plt.ylim([0.1, 1])
+        plt.legend(loc="upper right")
         plt.show()
 
         plt.plot(self.history["accuracy"], label="Training Accuracy")
