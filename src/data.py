@@ -1,6 +1,7 @@
 from zipfile import ZipFile
 from pathlib import Path
 import splitfolders
+import argparse
 import shutil
 import os
 
@@ -128,7 +129,15 @@ class Data:
 
 
 if __name__ == "__main__":
-    data = Data()
+    parser = argparse.ArgumentParser(
+        description="Configuracaoes para extracao das imagens"
+    )
+
+    parser.add_argument("enviroment", default="local", help="local or colab")
+
+    args = parser.parse_args()
+
+    data = Data(args.enviroment)
     data.unzip()
     data.split_data()
     data.move_data_files()
