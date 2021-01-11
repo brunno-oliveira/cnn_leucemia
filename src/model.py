@@ -67,13 +67,11 @@ class Model:
 
     def set_data(self, batch_size: int = 32) -> Sequential:
         print("SET DATA")
-        image_height: int = 128
-        image_width: int = 128
+        image_height: int = 64
+        image_width: int = 64
         # TRAIN DATASET
 
-        train_datagen = ImageDataGenerator(
-            rescale=1.0 / 255, shear_range=0.2, horizontal_flip=True
-        )
+        train_datagen = ImageDataGenerator(rescale=1.0 / 255)
         self.training_set = train_datagen.flow_from_directory(
             self.train_path,
             seed=SEED,
@@ -113,8 +111,17 @@ class Model:
         self.model.add(
             layers.Conv2D(
                 filters=64,
-                kernel_size=(12, 12),
-                input_shape=(128, 128, 1),
+                kernel_size=(3, 3),
+                input_shape=(64, 64, 1),
+                activation="relu",
+            )
+        )
+
+        self.model.add(
+            layers.Conv2D(
+                filters=64,
+                kernel_size=(3, 3),
+                input_shape=(64, 64, 1),
                 activation="relu",
             )
         )
@@ -123,7 +130,16 @@ class Model:
         self.model.add(
             layers.Conv2D(
                 filters=64,
-                kernel_size=(5, 5),
+                kernel_size=(3, 3),
+                input_shape=(64, 64, 1),
+                activation="relu",
+            )
+        )
+
+        self.model.add(
+            layers.Conv2D(
+                filters=64,
+                kernel_size=(3, 3),
                 kernel_initializer="he_uniform",
                 activation="relu",
             )
@@ -133,7 +149,7 @@ class Model:
         self.model.add(
             layers.Conv2D(
                 filters=128,
-                kernel_size=(2, 2),
+                kernel_size=(3, 3),
                 kernel_initializer="he_uniform",
                 activation="relu",
             )
@@ -142,7 +158,7 @@ class Model:
         self.model.add(
             layers.Conv2D(
                 filters=128,
-                kernel_size=(2, 2),
+                kernel_size=(3, 3),
                 kernel_initializer="he_uniform",
                 activation="relu",
             )
@@ -152,13 +168,14 @@ class Model:
         self.model.add(layers.Flatten())
 
         self.model.add(layers.Dense(512, activation="relu"))
-        self.model.add(layers.Dropout(0.5))
+        self.model.add(layers.Dropout(0.6))
         self.model.add(layers.Dense(512, activation="relu"))
+        self.model.add(layers.Dropout(0.6))
         self.model.add(layers.Dense(units=1, activation="sigmoid"))
 
         # Compilando a rede
         self.model.compile(
-            optimizer=Adam(learning_rate=0.001),
+            optimizer=Adam(learning_rate=0.0001),
             loss="binary_crossentropy",
             metrics=[
                 metrics.FalseNegatives(name="fn"),

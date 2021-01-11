@@ -138,13 +138,21 @@ class Data:
                     self.project_root_path, "data", folder, classe
                 )
                 for file in os.listdir(class_path):
+                    w_crop = 30  # pixel
+                    y_crop = 30  # pixel
+
                     file_path = os.path.join(
                         self.project_root_path, "data", folder, classe, file
                     )
                     original_img = cv2.imread(file_path)
                     proc_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2GRAY)
                     proc_img = cv2.equalizeHist(proc_img)
-                    cv2.imwrite(file_path, proc_img)
+
+                    h = proc_img.shape[0]
+                    w = proc_img.shape[1]
+                    zoom_img = proc_img[y_crop : y_crop + h, w_crop : w_crop + w]
+
+                    cv2.imwrite(file_path, zoom_img)
 
 
 if __name__ == "__main__":
