@@ -3,6 +3,7 @@ from pathlib import Path
 import splitfolders
 import argparse
 import shutil
+import cv2
 import os
 
 
@@ -127,6 +128,24 @@ class Data:
             os.path.join(self.project_root_path, "data"),
         )
 
+    def pre_process_images(self):
+        print("Pre-processing images")
+        for folder in os.listdir(os.path.join(self.project_root_path, "data")):
+            folder_path = os.path.join(self.project_root_path, "data", folder)
+            print(f"Pre-processing {folder_path}")
+            for classe in os.listdir(folder_path):
+                class_path = os.path.join(
+                    self.project_root_path, "data", folder, classe
+                )
+                for file in os.listdir(class_path):
+                    file_path = os.path.join(
+                        self.project_root_path, "data", folder, classe, file
+                    )
+                    original_img = cv2.imread(file_path)
+                    proc_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2GRAY)
+                    proc_img = cv2.equalizeHist(proc_img)
+                    cv2.imwrite(file_path, proc_img)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -144,3 +163,4 @@ if __name__ == "__main__":
     data.remove_subfolder_data()
     data.create_class_folder()
     data.rename_data_folder()
+    data.pre_process_images()
