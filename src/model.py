@@ -110,16 +110,7 @@ class Model:
 
         self.model.add(
             layers.Conv2D(
-                filters=64,
-                kernel_size=(3, 3),
-                input_shape=(64, 64, 1),
-                activation="relu",
-            )
-        )
-
-        self.model.add(
-            layers.Conv2D(
-                filters=64,
+                filters=32,
                 kernel_size=(3, 3),
                 input_shape=(64, 64, 1),
                 activation="relu",
@@ -131,16 +122,6 @@ class Model:
             layers.Conv2D(
                 filters=64,
                 kernel_size=(3, 3),
-                input_shape=(64, 64, 1),
-                activation="relu",
-            )
-        )
-
-        self.model.add(
-            layers.Conv2D(
-                filters=64,
-                kernel_size=(3, 3),
-                kernel_initializer="he_uniform",
                 activation="relu",
             )
         )
@@ -150,16 +131,23 @@ class Model:
             layers.Conv2D(
                 filters=128,
                 kernel_size=(3, 3),
-                kernel_initializer="he_uniform",
+                activation="relu",
+            )
+        )
+        self.model.add(layers.MaxPooling2D(pool_size=(2, 2)))
+
+        self.model.add(
+            layers.Conv2D(
+                filters=1024,
+                kernel_size=(3, 3),
                 activation="relu",
             )
         )
 
         self.model.add(
             layers.Conv2D(
-                filters=128,
+                filters=1024,
                 kernel_size=(3, 3),
-                kernel_initializer="he_uniform",
                 activation="relu",
             )
         )
@@ -167,18 +155,17 @@ class Model:
 
         self.model.add(layers.Flatten())
 
-        self.model.add(layers.Dense(512, activation="relu"))
-        self.model.add(layers.Dropout(0.6))
-        self.model.add(layers.Dense(512, activation="relu"))
-        self.model.add(layers.Dropout(0.6))
+        self.model.add(layers.Dense(256, activation="relu"))
+        self.model.add(layers.Dropout(0.5))
+        self.model.add(layers.Dense(256, activation="relu"))
+        self.model.add(layers.Dropout(0.5))
         self.model.add(layers.Dense(units=1, activation="sigmoid"))
 
         # Compilando a rede
         self.model.compile(
             optimizer=Adam(learning_rate=0.0001),
-            loss="binary_crossentropy",
+            loss="mse",
             metrics=[
-                metrics.FalseNegatives(name="fn"),
                 metrics.BinaryAccuracy(name="accuracy"),
                 metrics.Recall(name="recall"),
             ],
