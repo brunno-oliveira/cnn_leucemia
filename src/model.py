@@ -155,10 +155,10 @@ class Model:
 
         self.model.add(layers.Flatten())
 
-        self.model.add(layers.Dense(256, activation="relu"))
-        self.model.add(layers.Dropout(0.5))
-        self.model.add(layers.Dense(256, activation="relu"))
-        self.model.add(layers.Dropout(0.5))
+        self.model.add(layers.Dense(512, activation="relu"))
+        self.model.add(layers.Dropout(0.6))
+        self.model.add(layers.Dense(512, activation="relu"))
+        self.model.add(layers.Dropout(0.6))
         self.model.add(layers.Dense(units=1, activation="sigmoid"))
 
         # Compilando a rede
@@ -208,7 +208,7 @@ class Model:
         plt.plot(self.history["val_loss"], label="Validation Loss")
         plt.xlabel("Epoch")
         plt.ylabel("Loss")
-        plt.ylim([0.1, 1])
+        plt.ylim([0.01, 1])
         plt.legend(loc="upper right")
         plt.show()
 
