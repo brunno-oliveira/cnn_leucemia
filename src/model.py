@@ -113,6 +113,15 @@ class Model:
                 activation="relu",
             )
         )
+
+        self.model.add(
+            layers.Conv2D(
+                filters=32,
+                kernel_size=(3, 3),
+                input_shape=(64, 64, 3),
+                activation="relu",
+            )
+        )
         self.model.add(layers.MaxPooling2D(pool_size=(2, 2)))
 
         self.model.add(
@@ -126,24 +135,16 @@ class Model:
 
         self.model.add(
             layers.Conv2D(
-                filters=128,
-                kernel_size=(3, 3),
-                activation="relu",
-            )
-        )
-        self.model.add(layers.MaxPooling2D(pool_size=(2, 2)))
-
-        self.model.add(
-            layers.Conv2D(
-                filters=1024,
+                filters=256,
                 kernel_size=(3, 3),
                 activation="relu",
             )
         )
 
+
         self.model.add(
             layers.Conv2D(
-                filters=1024,
+                filters=256,
                 kernel_size=(3, 3),
                 activation="relu",
             )
