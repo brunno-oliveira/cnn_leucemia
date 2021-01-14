@@ -146,7 +146,7 @@ class Data:
                     )
                     original_img = cv2.imread(file_path)
                     proc_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2GRAY)
-                    proc_img = cv2.equalizeHist(proc_img)
+                    _, proc_img = cv2.threshold(proc_img, 125, 300, cv2.THRESH_BINARY)
 
                     h = proc_img.shape[0]
                     w = proc_img.shape[1]

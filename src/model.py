@@ -75,7 +75,6 @@ class Model:
         self.training_set = train_datagen.flow_from_directory(
             self.train_path,
             seed=SEED,
-            color_mode="grayscale",
             target_size=(image_height, image_width),
             batch_size=batch_size,
             class_mode="binary",
@@ -87,7 +86,6 @@ class Model:
         self.validation_set = validation_datagen.flow_from_directory(
             self.validation_path,
             seed=SEED,
-            color_mode="grayscale",
             target_size=(image_height, image_width),
             batch_size=batch_size,
             class_mode="binary",
@@ -99,7 +97,6 @@ class Model:
         self.testing_set = test_datagen.flow_from_directory(
             self.test_path,
             seed=SEED,
-            color_mode="grayscale",
             target_size=(image_height, image_width),
             batch_size=batch_size,
             class_mode="binary",
@@ -112,7 +109,7 @@ class Model:
             layers.Conv2D(
                 filters=32,
                 kernel_size=(3, 3),
-                input_shape=(64, 64, 1),
+                input_shape=(64, 64, 3),
                 activation="relu",
             )
         )
