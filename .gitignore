@@ -134,3 +134,6 @@ output/*
 model/assets
 model/variables
 model/*.pb
+saved_model/assets
+saved_model/variables
+saved_model/*.pb
